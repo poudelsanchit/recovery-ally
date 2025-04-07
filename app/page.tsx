@@ -1,5 +1,5 @@
-import Header from "./header";
-import LandingMain from "./main";
+import Header from "./landing/header";
+import LandingMain from "./landing/main";
 
 export default function Home() {
   return (
