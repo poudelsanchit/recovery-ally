@@ -1,10 +1,10 @@
-import Header from "./landing/header";
 import LandingMain from "./landing/main";
+import NavBar from "./landing/navbar";
 
 export default function Home() {
   return (
     <>
-      <Header />
+      <NavBar />
       <LandingMain />
     </>
   );

@@ -12,7 +12,7 @@ const menuItems = [
   { name: "About Us", href: "#link" },
 ];
 
-export default function Header () {
+export default function NavBar () {
   const [menuState, setMenuState] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
