@@ -1,11 +1,11 @@
-import { Header } from "./header";
+import Header from "./header";
+import LandingMain from "./main";
 
 export default function Home() {
   return (
     <>
       <Header />
-      <main className="h-screen w-full"></main>
-      <footer className="h-screen"></footer>
+      <LandingMain />
     </>
   );
 }

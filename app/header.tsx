@@ -12,7 +12,7 @@ const menuItems = [
   { name: "About Us", href: "#link" },
 ];
 
-export const Header = () => {
+export default function Header () {
   const [menuState, setMenuState] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
