@@ -4,6 +4,12 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { FcGoogle } from "react-icons/fc";
 
 const menuItems = [
   { name: "Services", href: "#link" },
@@ -12,7 +18,7 @@ const menuItems = [
   { name: "About Us", href: "#link" },
 ];
 
-export default function NavBar () {
+export default function NavBar() {
   const [menuState, setMenuState] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -88,44 +94,27 @@ export default function NavBar () {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                <Button
-                  asChild
-                  variant="outline"
-                  size="sm"
-                  className={cn(isScrolled && "lg:hidden")}
-                >
-                  <Link href="/login">
-                    <span className=" font-semibold">For Therapists</span>
-                  </Link>
+                <Button asChild size="sm" variant={"outline"}>
+                  <span className=" font-semibold cursor-pointer">
+                    Get Demo
+                  </span>
                 </Button>
-                <Button
-                  asChild
-                  size="sm"
-                  className={cn(isScrolled && "lg:hidden")}
-                >
-                  <Link href="/signup">
-                    <span className=" font-semibold">For Patients</span>
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant={'outline'}
-                  size="sm"
-                  className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
-                >
-                  <Link href="/login">
-                    <span className="font-semibold">For Therapists</span>
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="sm"
-                  className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
-                >
-                  <Link href="/login">
-                    <span className="font-semibold">For Patients</span>
-                  </Link>
-                </Button>
+                <Popover>
+                  <PopoverTrigger>
+                    <Button asChild size="sm">
+                      <span className=" font-semibold cursor-pointer px-3">
+                        Login
+                      </span>
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-max h-max  px-2 py-2 font-semibold flex justify-center items-center gap-2 text-base cursor-pointer"
+                    align="end"
+                  >
+                    <FcGoogle />
+                    Login with google
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
           </div>
@@ -133,4 +122,4 @@ export default function NavBar () {
       </nav>
     </header>
   );
-};
+}
