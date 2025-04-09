@@ -4,13 +4,8 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { FcGoogle } from "react-icons/fc";
-
+import { useSession, signIn, signOut } from "next-auth/react";
+import { FaGoogle } from "react-icons/fa";
 const menuItems = [
   { name: "Services", href: "#link" },
   { name: "Treatment", href: "#link" },
@@ -19,6 +14,7 @@ const menuItems = [
 ];
 
 export default function NavBar() {
+  const { data: session } = useSession();
   const [menuState, setMenuState] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -29,6 +25,7 @@ export default function NavBar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  console.log(session);
   return (
     <header>
       <nav
@@ -94,27 +91,26 @@ export default function NavBar() {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                <Button asChild size="sm" variant={"outline"}>
+                <Button variant={"outline"}>
                   <span className=" font-semibold cursor-pointer">
                     Get Demo
                   </span>
                 </Button>
-                <Popover>
-                  <PopoverTrigger>
-                    <Button asChild size="sm">
-                      <span className=" font-semibold cursor-pointer px-3">
-                        Login
-                      </span>
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="w-max h-max  px-2 py-2 font-semibold flex justify-center items-center gap-2 text-base cursor-pointer"
-                    align="end"
-                  >
-                    <FcGoogle />
-                    Login with google
-                  </PopoverContent>
-                </Popover>
+
+                <Button onClick={() => signIn("google", { redirect: false })}>
+                  <span className=" font-semibold cursor-pointer flex justify-center items-center gap-2">
+                    <FaGoogle />
+                    Login
+                  </span>
+                </Button>
+                {session && (
+                  <Button onClick={() => signOut()}>
+                    <span className=" font-semibold cursor-pointer flex justify-center items-center gap-2">
+                      <FaGoogle />
+                      Logout
+                    </span>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
