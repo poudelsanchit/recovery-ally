@@ -33,7 +33,7 @@ const handler = NextAuth({
           console.error("Error creating new user:", error);
         }
       }
-      return true;
+      return existingUser?.isOnboarded ? "/app" : "/onboarding";
     },
   },
 });
