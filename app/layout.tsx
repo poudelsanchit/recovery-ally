@@ -1,8 +1,7 @@
-"use client";
 import type { Metadata } from "next";
 import "./globals.css";
 import { Quicksand } from "next/font/google";
-import { SessionProvider } from "next-auth/react";
+import SessionWrapper from "@/lib/sessionWrapper";
 
 const quicksand = Quicksand({
   weight: ["300", "400", "500", "700"],
@@ -17,9 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <SessionProvider>
+      <SessionWrapper>
         <body className={`${quicksand.className} antialiased`}>{children}</body>
-      </SessionProvider>
+      </SessionWrapper>
     </html>
   );
 }

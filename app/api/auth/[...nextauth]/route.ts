@@ -18,22 +18,45 @@ const handler = NextAuth({
     async signIn({ user }) {
       await dbConnect();
       const existingUser = await UserModel.findOne({ email: user.email });
+
       if (!existingUser) {
         try {
           const newUser = new UserModel({
             name: user.name,
             email: user.email,
             image: user.image,
-            isOnboarded: false, // You can set this to `false` by default if needed
+            isOnboarded: false,
           });
-
           await newUser.save();
           console.log("New user created:", newUser);
         } catch (error) {
           console.error("Error creating new user:", error);
+          return false;
         }
       }
-      return existingUser?.isOnboarded ? "/app" : "/onboarding";
+      return true;
+    },
+    async jwt({ token, user }) {
+      // Fetch fresh user data from database on every JWT update
+      await dbConnect();
+      const dbUser = await UserModel.findOne({ email: token.email });
+
+      if (dbUser) {
+        token.isOnboarded = dbUser.isOnboarded;
+      }
+
+      // Initial sign-in (user exists only on first call)
+      if (user) {
+        token.isOnboarded = user.isOnboarded || false;
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.isOnboarded = token.isOnboarded;
+      }
+      return session;
     },
   },
 });
