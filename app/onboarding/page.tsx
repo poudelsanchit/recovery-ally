@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { useSession, signOut } from "next-auth/react"; // ✅ `update` is a named export
+import { useSession, signOut, getSession } from "next-auth/react"; // ✅ `update` is a named export
 import {
   Select,
   SelectContent,
@@ -50,8 +50,11 @@ export default function OnBoarding() {
         values
       );
       const data = response.data;
+      // Force session refresh to get the updated isOnboarded value
+      await getSession();
+
+      // Then navigate
       router.push("/app");
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

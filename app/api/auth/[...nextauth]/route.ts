@@ -48,12 +48,6 @@ const handler = NextAuth({
         token.isOnboarded = dbUser.isOnboarded;
       }
 
-      // Initial sign-in (user exists only on first call)
-      if (user) {
-        token.userId = user.id; // Optional fallback (first time sign-in)
-        token.isOnboarded = user.isOnboarded || false;
-      }
-
       return token;
     },
     async session({ session, token }) {
