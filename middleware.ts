@@ -41,7 +41,9 @@ export async function middleware(request: NextRequest) {
 
   // Prevent onboarded users from accessing onboarding again
   if (token && pathname.startsWith("/onboarding") && token.isOnboarded) {
-    return NextResponse.redirect(new URL("/app", request.url));
+    return NextResponse.redirect(
+      new URL(token.role === "physio" ? "/physio" : "patient", request.url)
+    );
   }
 
   // Prevent non-onboarded users from accessing /app
