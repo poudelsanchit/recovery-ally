@@ -4,6 +4,7 @@ export interface IUser extends Document {
   email: string;
   image: string;
   isOnboarded: boolean;
+  role: string;
 }
 
 const UserSchema: Schema<IUser> = new mongoose.Schema(
@@ -27,6 +28,9 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
     isOnboarded: {
       type: Boolean,
       default: false,
+    },
+    role: {
+      type: String,
     },
   },
   {

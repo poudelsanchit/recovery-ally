@@ -42,11 +42,15 @@ const handler = NextAuth({
       const dbUser = await UserModel.findOne({ email: token.email });
 
       if (dbUser) {
+        if (dbUser?._id) {
+          token.userId = dbUser._id.toString(); // ✅ Add this
+        }
         token.isOnboarded = dbUser.isOnboarded;
       }
 
       // Initial sign-in (user exists only on first call)
       if (user) {
+        token.userId = user.id; // Optional fallback (first time sign-in)
         token.isOnboarded = user.isOnboarded || false;
       }
 
@@ -54,6 +58,7 @@ const handler = NextAuth({
     },
     async session({ session, token }) {
       if (session.user) {
+        session.user.userId = token.userId; // ✅ Add this
         session.user.isOnboarded = token.isOnboarded;
       }
       return session;

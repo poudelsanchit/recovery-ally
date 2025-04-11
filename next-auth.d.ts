@@ -4,13 +4,14 @@ import NextAuth from "next-auth";
 declare module "next-auth" {
   interface User {
     isOnboarded?: boolean;
+    userId?: string;
   }
 
   interface Session {
     accessToken?: string; // Add accessToken to session
     userId?: string; // Optional userId, if you plan to add it
     user?: User & {
-      id: string;
+      userId?: string;
       isOnboarded?: boolean;
     };
   }
