@@ -17,7 +17,10 @@ export async function middleware(request: NextRequest) {
   // Redirect unauthenticated users away from protected routes
   if (
     !token &&
-    (pathname.startsWith("/app") || pathname.startsWith("/onboarding"))
+    (pathname.startsWith("/app") ||
+      pathname.startsWith("/onboarding") ||
+      pathname.startsWith("/patient") ||
+      pathname.startsWith("/physio"))
   ) {
     return NextResponse.redirect(new URL("/", request.url));
   }

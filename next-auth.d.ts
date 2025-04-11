@@ -5,6 +5,7 @@ declare module "next-auth" {
   interface User {
     isOnboarded?: boolean;
     userId?: string;
+    role?: string;
   }
 
   interface Session {
@@ -13,6 +14,7 @@ declare module "next-auth" {
     user?: User & {
       userId?: string;
       isOnboarded?: boolean;
+      role?: string;
     };
   }
 }
@@ -23,5 +25,6 @@ declare module "next-auth/jwt" {
     accessToken?: string; // Add accessToken to JWT
     userId?: string; // Optional userId
     isOnboarded?: boolean;
+    role?: string;
   }
 }

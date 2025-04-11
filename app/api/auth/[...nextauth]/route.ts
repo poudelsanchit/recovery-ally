@@ -26,6 +26,7 @@ const handler = NextAuth({
             email: user.email,
             image: user.image,
             isOnboarded: false,
+            role: "",
           });
           await newUser.save();
           console.log("New user created:", newUser);
@@ -36,7 +37,7 @@ const handler = NextAuth({
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token }) {
       // Fetch fresh user data from database on every JWT update
       await dbConnect();
       const dbUser = await UserModel.findOne({ email: token.email });
@@ -46,6 +47,7 @@ const handler = NextAuth({
           token.userId = dbUser._id.toString(); // ✅ Add this
         }
         token.isOnboarded = dbUser.isOnboarded;
+        token.role = dbUser.role;
       }
 
       return token;
@@ -54,6 +56,7 @@ const handler = NextAuth({
       if (session.user) {
         session.user.userId = token.userId; // ✅ Add this
         session.user.isOnboarded = token.isOnboarded;
+        session.user.role = token.role;
       }
       return session;
     },
