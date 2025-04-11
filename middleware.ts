@@ -47,9 +47,32 @@ export async function middleware(request: NextRequest) {
   }
 
   // Prevent non-onboarded users from accessing /app
-  if (token && pathname.startsWith("/app") && !token.isOnboarded) {
+  if (
+    token &&
+    (pathname.startsWith("/patient") || pathname.startsWith("/physio")) &&
+    !token.isOnboarded
+  ) {
     return NextResponse.redirect(new URL("/onboarding", request.url));
   }
 
+  // Prevent Patient from accessing therapist
+  if (
+    token &&
+    token.isOnboarded &&
+    token.role === "patient" &&
+    pathname.startsWith("/physio")
+  ) {
+    return NextResponse.redirect(new URL("/patient", request.url));
+  }
+
+  // Prevent therapist from accessing patient
+  if (
+    token &&
+    token.isOnboarded &&
+    token.role === "physio" &&
+    pathname.startsWith("/patient")
+  ) {
+    return NextResponse.redirect(new URL("/physio", request.url));
+  }
   return NextResponse.next();
 }
