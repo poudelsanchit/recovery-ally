@@ -28,7 +28,14 @@ export async function middleware(request: NextRequest) {
   // Redirect authenticated users away from root to their proper route
   if (token && pathname === "/") {
     return NextResponse.redirect(
-      new URL(token.isOnboarded ? "/app" : "/onboarding", request.url)
+      new URL(
+        token.isOnboarded
+          ? token.role === "patient"
+            ? "/patient"
+            : "/physio"
+          : "/onboarding",
+        request.url
+      )
     );
   }
 
