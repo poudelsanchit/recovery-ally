@@ -1,6 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/user";
-import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
 interface IParams {
   userId: string;
@@ -38,7 +37,7 @@ export async function POST(
       status: 201,
       success: true,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({
       error: "Internal Server Error",
       status: 500,

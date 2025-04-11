@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
 
 const menuItems = [
@@ -16,8 +15,7 @@ const menuItems = [
 ];
 
 export default function NavBar() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+  const { data: session } = useSession();
   const [menuState, setMenuState] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -29,14 +27,6 @@ export default function NavBar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  // useEffect(() => {
-  //   console.log("session:", session);
-  //   console.log("status:", status);
-  //   if (status === "authenticated") {
-  //     const redirectPath = session?.user?.isOnboarded ? "/app" : "/onboarding";
-  //     router.push(redirectPath);
-  //   }
-  // }, [status, session, router]);
 
   return (
     <header>

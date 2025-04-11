@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import { Quicksand } from "next/font/google";
 import SessionWrapper from "@/lib/sessionWrapper";

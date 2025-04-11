@@ -6,7 +6,11 @@
 - ✅ Inital Deployment
 - ✅ Create a simple landing page
 - ✅ Connect To Database using NextAuth (MongoDb)
-- ✅ Implement User Authentication and Authorization (Patient, Therapist)
+- ✅ Implement User Authentication 
+- ✅ Implemented all of the User flow
+            - If user is not logged in, don't let user access /onboarding, /patient, /physio
+            - If user is  logged in but not onboarded,  don't let user access  /patient, /physio , / and navigate automatically to /onboarding while trying to access other routes
+            - If user is  logged in, and onboarded, if user = patient, then  authorized route = /patient, if user = physio, authorized route = /physio
 
 
 

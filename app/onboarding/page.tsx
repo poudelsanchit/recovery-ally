@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 
 const poppins = Poppins({
   weight: ["400", "500", "500", "600", "700"],
+  subsets: ["latin"],
 });
 const formSchema = z.object({
   role: z.string().min(1, {
@@ -45,11 +46,10 @@ export default function OnBoarding() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axios.post(
+      await axios.post(
         `/api/v1/user/${session?.user?.userId}/onboarding`,
         values
       );
-      const data = response.data;
       // Force session refresh to get the updated isOnboarded value
       await getSession();
       if (values.role === "physio") {
