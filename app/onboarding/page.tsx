@@ -52,8 +52,8 @@ export default function OnBoarding() {
       );
       // Force session refresh to get the updated isOnboarded value
       await getSession();
-      if (values.role === "physio") {
-        router.push("/physio");
+      if (values.role === "therapist") {
+        router.push("/therapist");
       } else if (values.role === "patient") {
         router.push("patient");
       }
@@ -107,8 +107,11 @@ export default function OnBoarding() {
                           >
                             Patient
                           </SelectItem>
-                          <SelectItem value="physio" className="cursor-pointer">
-                            Physio Therapist
+                          <SelectItem
+                            value="therapist"
+                            className="cursor-pointer"
+                          >
+                            Physiotherapist
                           </SelectItem>
                         </SelectContent>
                       </Select>

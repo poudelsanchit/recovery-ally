@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
     (pathname.startsWith("/app") ||
       pathname.startsWith("/onboarding") ||
       pathname.startsWith("/patient") ||
-      pathname.startsWith("/physio"))
+      pathname.startsWith("/therapist"))
   ) {
     return NextResponse.redirect(new URL("/", request.url));
   }
@@ -32,7 +32,7 @@ export async function middleware(request: NextRequest) {
         token.isOnboarded
           ? token.role === "patient"
             ? "/patient"
-            : "/physio"
+            : "/therapist"
           : "/onboarding",
         request.url
       )
@@ -42,14 +42,14 @@ export async function middleware(request: NextRequest) {
   // Prevent onboarded users from accessing onboarding again
   if (token && pathname.startsWith("/onboarding") && token.isOnboarded) {
     return NextResponse.redirect(
-      new URL(token.role === "physio" ? "/physio" : "patient", request.url)
+      new URL(token.role === "therapist" ? "/therapist" : "patient", request.url)
     );
   }
 
   // Prevent non-onboarded users from accessing /app
   if (
     token &&
-    (pathname.startsWith("/patient") || pathname.startsWith("/physio")) &&
+    (pathname.startsWith("/patient") || pathname.startsWith("/therapist")) &&
     !token.isOnboarded
   ) {
     return NextResponse.redirect(new URL("/onboarding", request.url));
@@ -60,19 +60,24 @@ export async function middleware(request: NextRequest) {
     token &&
     token.isOnboarded &&
     token.role === "patient" &&
-    pathname.startsWith("/physio")
+    pathname.startsWith("/therapist")
   ) {
+    console.log(token.role)
     return NextResponse.redirect(new URL("/patient", request.url));
   }
+
+  console.log(token)
+  console.log(token?.isOnboarded)
+  console.log(token?.role)
 
   // Prevent therapist from accessing patient
   if (
     token &&
     token.isOnboarded &&
-    token.role === "physio" &&
+    token.role === "therapist" &&
     pathname.startsWith("/patient")
   ) {
-    return NextResponse.redirect(new URL("/physio", request.url));
+    return NextResponse.redirect(new URL("/therapist", request.url));
   }
   return NextResponse.next();
 }
