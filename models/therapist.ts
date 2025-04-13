@@ -1,4 +1,4 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, Types, model, models } from "mongoose";
 import { IUser } from "./user";
 import UserModel from "./user";
 
@@ -24,10 +24,8 @@ const TherapistInfoSchema = new Schema<ITherapistInfo>(
   { timestamps: true }
 );
 
-export const TherapistModel = model<ITherapistInfo>(
-  "Therapist",
-  TherapistInfoSchema
-);
+export const TherapistModel =
+  models.Therapist || model<ITherapistInfo>("Therapist", TherapistInfoSchema);
 
 // Helper to create therapist with user
 export async function createTherapist(

@@ -1,24 +1,13 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, Types, model, models } from "mongoose";
 import { IUser } from "./user";
 import UserModel from "./user";
 
 export interface IPatientInfo extends Document {
-  user: Types.ObjectId | IUser;
-  therapist: Types.ObjectId | IUser;
-  diagnosis?: string;
+  user?: Types.ObjectId | IUser;
+  therapist?: Types.ObjectId | IUser;
+  injury?: string;
   treatmentPlan?: string;
-  sessions?: Array<{
-    date: Date;
-    notes: string;
-    duration: number;
-  }>;
 }
-
-const sessionSchema = new Schema({
-  date: { type: Date, required: true },
-  notes: { type: String, required: true },
-  duration: { type: Number, required: true },
-});
 
 const PatientInfoSchema = new Schema<IPatientInfo>(
   {
@@ -28,15 +17,15 @@ const PatientInfoSchema = new Schema<IPatientInfo>(
       required: true,
       unique: true,
     },
-    therapist: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    diagnosis: String,
+    therapist: { type: Schema.Types.ObjectId, ref: "User" },
+    injury: String,
     treatmentPlan: String,
-    sessions: [sessionSchema],
   },
   { timestamps: true }
 );
 
-export const PatientModel = model<IPatientInfo>("Patient", PatientInfoSchema);
+export const PatientModel =
+  models.Patient || model<IPatientInfo>("Patient", PatientInfoSchema);
 
 // Helper to create patient with user
 export async function createPatient(

@@ -35,51 +35,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-const data: Patient[] = [
-  {
-    id: "m5gr84i9",
-    location: "Pokhara-30, Shishuwa",
-    number: "9846905213",
-    name: "Sanchit Poudel",
-    injury: "ACL Tear",
-  },
-  {
-    id: "3u1reuv4",
-    location: "Pokhara-30, Shishuwa",
-    number: "9848764210",
-    name: "Sachin Poudel",
-    injury: "Bucket Handle Tear",
-  },
-  {
-    id: "derv1ws0",
-    location: "Pokhara-31, Gagangauda",
-    number: "9833059864",
-    name: "Pratim Parajuli Thapa ",
-    injury: "MCL Tear",
-  },
-  {
-    id: "5kma53ae",
-    location: "Pokhara-31, Gagangauda",
-    number: "9846924211",
-    name: "Saurabh Adhikari",
-    injury: "Ligament Tear",
-  },
-  {
-    id: "bhqecj4p",
-    location: "Pokhara-28, Budibajar",
-    number: "9846922332",
-    name: "Ananda Bastakoti",
-    injury: "Shoulder Dislocation",
-  },
-];
+import Image from "next/image";
+import AddPatient from "./AddPatient";
 
 export type Patient = {
-  id: string;
-  location: string;
-  number: string;
+  _id: string;
   name: string;
+  email: string;
+  image?: string;
   injury: string; // Changed from amount: number
+  treatmentPlan: null | string;
 };
 
 export const columns: ColumnDef<Patient>[] = [
@@ -106,6 +71,19 @@ export const columns: ColumnDef<Patient>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "image",
+    header: "Image",
+    cell: ({ row }) => (
+      <Image
+        src={row.getValue("image")}
+        width={20}
+        height={20}
+        alt="profile"
+        className="h-6 w-6 rounded-full "
+      />
+    ),
+  },
+  {
     accessorKey: "name",
     header: ({ column }) => {
       return (
@@ -119,27 +97,37 @@ export const columns: ColumnDef<Patient>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "number",
-    header: "Phone",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("number")}</div>
+      <div className="flex items-center gap-2">
+        <Image
+          src={row.getValue("image")}
+          width={20}
+          height={20}
+          alt="profile"
+          className="h-6 w-6 rounded-full hidden"
+        />
+        {row.getValue("name")}
+      </div>
     ),
   },
+
   {
-    accessorKey: "location",
-    header: "Location",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("location")}</div>
-    ),
+    accessorKey: "email",
+    header: "Email",
+    cell: ({ row }) => <div>{row.getValue("email")}</div>,
   },
   {
     accessorKey: "injury",
     header: "Injury",
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("injury")}</div>
+    ),
+  },
+  {
+    accessorKey: "treatmentPlan",
+    header: "Treatment Plan",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("treatmentPlan")}</div>
     ),
   },
   {
@@ -159,7 +147,7 @@ export const columns: ColumnDef<Patient>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(Patient.id)}
+              onClick={() => navigator.clipboard.writeText(Patient._id)}
             >
               Copy Patient ID
             </DropdownMenuItem>
@@ -173,7 +161,8 @@ export const columns: ColumnDef<Patient>[] = [
   },
 ];
 
-export function PatientsTable() {
+export function PatientsTable({ patients = [] }: { patients?: Patient[] }) {
+  const data = React.useMemo(() => patients || [], [patients]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -239,9 +228,7 @@ export function PatientsTable() {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button className="rounded-sm cursor-pointer font-medium px-6">
-            Add Patient <Plus />
-          </Button>
+          <AddPatient />
         </div>
       </div>
       <div className="rounded-md border">

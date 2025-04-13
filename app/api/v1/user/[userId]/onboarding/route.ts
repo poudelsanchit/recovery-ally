@@ -1,7 +1,9 @@
 import dbConnect from "@/lib/dbConnect";
+import { PatientModel } from "@/models/patient";
+import { TherapistModel } from "@/models/therapist";
 import UserModel from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
-interface IParams {
+export interface IParams {
   userId: string;
 }
 export async function POST(
@@ -10,7 +12,8 @@ export async function POST(
 ) {
   dbConnect();
   try {
-    const { role } = await request.json();
+    const { role, specialization, licenseNumber, injury } =
+      await request.json();
     const { userId } = await params;
     if (!userId) {
       return NextResponse.json({
@@ -31,13 +34,55 @@ export async function POST(
 
     user.role = role;
     user.isOnboarded = true;
+    if (role === "patient") {
+      console.log("----------------Patient", injury);
+      if (!injury) {
+        return NextResponse.json({
+          error: "Injury is required",
+          status: 400,
+          success: false,
+        });
+      }
+      const newPatient = new PatientModel({
+        user: userId,
+        injury: injury,
+        treatmentPlan: "",
+      });
+      await newPatient.save();
+    }
+
+    if (role === "therapist") {
+      if (!specialization) {
+        return NextResponse.json({
+          error: "Specialization is required",
+          status: 400,
+          success: false,
+        });
+      }
+      if (!licenseNumber) {
+        return NextResponse.json({
+          error: "licenseNumber is required",
+          status: 400,
+          success: false,
+        });
+      }
+      const newTherapist = new TherapistModel({
+        user: userId,
+        specialization: specialization,
+        licenseNumber: licenseNumber,
+        patients: [],
+      });
+      await newTherapist.save();
+    }
+
     await user.save();
     return NextResponse.json({
       message: "Role Updated Succesfully",
       status: 201,
       success: true,
     });
-  } catch {
+  } catch (err) {
+    console.error("Patient creation error:", err);
     return NextResponse.json({
       error: "Internal Server Error",
       status: 500,

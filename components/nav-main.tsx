@@ -38,13 +38,13 @@ export function NavMain({
           const isActive = current === item.url; // matches Dashboard on ""
           return (
             <Link href={`/therapist/${item.url}`} key={index} prefetch>
-              <SidebarMenuItem className="h-9 flex justify-center items-center">
+              <SidebarMenuItem className=" flex justify-center items-center">
                 <SidebarMenuButton
                   tooltip={item.title}
                   className={cn(
-                    "transition-colors duration-150 ease-in-out flex items-center gap-2 px-2 py-3 cursor-pointer hover:bg-[#eceaea] rounded-xs",
+                    "h-10 transition-colors duration-150 ease-in-out flex items-center gap-2 px-2 py-3 cursor-pointer hover:bg-[#eceaea] rounded-sm",
                     isActive
-                      ? "bg-purple-600/90 hover:bg-purple-600 hover:text-white text-white"
+                      ? "bg-neutral-950/90 hover:bg-neutral-900 hover:text-white text-white"
                       : ""
                   )}
                 >
