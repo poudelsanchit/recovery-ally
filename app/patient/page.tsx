@@ -1,3 +1,3 @@
 export default function PatientMain() {
-  return <div>Patient View</div>;
+  return <div className="bg-purple-600">Patient View</div>;
 }

@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Quicksand } from "next/font/google";
 import SessionWrapper from "@/lib/sessionWrapper";
+import { Toaster } from "@/components/ui/sonner";
 
 const quicksand = Quicksand({
   weight: ["300", "400", "500", "700"],
@@ -16,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <SessionWrapper>
-        <body className={`${quicksand.className} antialiased`}>{children}</body>
+        <body className={`${quicksand.className} antialiased`}>
+          <Toaster />
+          {children}
+        </body>
       </SessionWrapper>
     </html>
   );
